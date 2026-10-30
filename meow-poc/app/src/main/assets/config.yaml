@@ -1,0 +1,24 @@
+# AsteriskMEOW PoC profile.
+#
+# DIRECT-only: this milestone proves the meow kernel, the fd-based TUN
+# listener and VpnService.protect on-device. Add proxies later; the same
+# file is parsed by meow-config.
+
+mode: rule
+log-level: info
+
+dns:
+  enable: true
+  listen: ""
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 223.5.5.5
+  nameserver:
+    - tcp://223.5.5.5
+    - tcp://119.29.29.29
+
+proxies: []
+
+rules:
+  - MATCH,DIRECT
