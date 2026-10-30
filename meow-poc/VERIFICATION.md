@@ -152,3 +152,17 @@ Empty keys now return the content unchanged.
 Verified with a local HTTP subscription (`http://127.0.0.1:8000/sub.yaml`,
 `adb reverse`): the profile saved as `127.0.0.1`, 同步时间 22:10, and
 `files/mihomo-profiles/profile-*.yaml` was written. No error dialog.
+
+### Delay tests and protocol coverage
+
+"Test group" failed every node because the first `libmeow` build disabled
+meow's default protocol features: the log showed
+`proxy type 'vless' is not compiled into this build`, every VLESS node was
+dropped, and every group was empty. Rebuilding `meow-config` / `meow-proxy`
+with their default features restored VLESS/Vision/Vmess/etc.
+
+`nativeProxyDelay` now runs meow's real URL probe (`probe_and_record`) and
+`queryGroupDelay` fans it out over the group's leaf nodes. Verified on the
+user's subscription: 334/344/352/516/613 ms on several nodes (two timeouts
+for genuinely slow nodes), and VPN egress changed from the host IP
+`18.138.127.43` to proxy `57.181.70.92`.

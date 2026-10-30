@@ -30,4 +30,6 @@ public final class Libmeow {
     public static native void nativeSetProtectorCallback(Object tunInterface);
 
     public static native void nativeSetOwnerCallback(Object tunInterface);
+
+    public static native String nativeProxyDelay(String name, String url, int timeoutMillis, String expected);
 }

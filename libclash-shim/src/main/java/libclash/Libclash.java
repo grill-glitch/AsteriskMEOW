@@ -20,6 +20,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -170,7 +176,9 @@ public final class Libclash {
 
     public static String queryProxyDelay(String name, String url, int timeoutMillis,
                                          String expectedStatus) {
-        return "{\"error\":\"delay test is not wired to the meow bridge yet\"}";
+        String result = Libmeow.nativeProxyDelay(name, url, timeoutMillis, expectedStatus);
+        Log.d(TAG, "delay " + name + ": " + result);
+        return result == null ? "{\"error\":\"delay probe failed\"}" : result;
     }
 
     public static String queryProviderProxyDelay(String providerName, String name, String url,
@@ -180,7 +188,40 @@ public final class Libclash {
 
     public static String queryGroupDelay(String name, String url, int timeoutMillis,
                                          String expectedStatus) {
-        return "{}";
+        List<String> members = groupMembers(name);
+        if (members.isEmpty()) {
+            return "{}";
+        }
+        JSONObject result = new JSONObject();
+        int workers = Math.min(8, members.size());
+        ExecutorService pool = Executors.newFixedThreadPool(Math.max(1, workers));
+        try {
+            List<Future<String>> futures = new ArrayList<>();
+            for (String member : members) {
+                futures.add(pool.submit(() ->
+                        Libmeow.nativeProxyDelay(member, url, timeoutMillis, expectedStatus)));
+            }
+            long waitMillis = Math.max(1000L, timeoutMillis + 2000L);
+            for (int i = 0; i < members.size(); i++) {
+                try {
+                    String json = futures.get(i).get(waitMillis, TimeUnit.MILLISECONDS);
+                    Log.d(TAG, "group delay " + members.get(i) + ": " + json);
+                    if (json == null) {
+                        continue;
+                    }
+                    JSONObject parsed = new JSONObject(json);
+                    int delay = parsed.optInt("delay", -1);
+                    if (delay >= 0) {
+                        result.put(members.get(i), delay);
+                    }
+                } catch (Throwable error) {
+                    Log.d(TAG, "group delay " + members.get(i) + " failed: " + error);
+                }
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+        return result.toString();
     }
 
     public static boolean patchSelector(String selector, String name) {
@@ -421,6 +462,82 @@ public final class Libclash {
             return nested.isFile() ? nested.getAbsolutePath() : null;
         }
         return file.isFile() ? file.getAbsolutePath() : null;
+    }
+
+    /** Flatten a proxy group (or GLOBAL) to leaf proxy names from the profile. */
+    private static List<String> groupMembers(String name) {
+        Map<?, ?> root = loadYaml();
+        if (root == null) {
+            return Collections.singletonList(name);
+        }
+        Map<String, Map<?, ?>> groups = new java.util.LinkedHashMap<>();
+        Object rawGroups = root.get("proxy-groups");
+        if (rawGroups instanceof List<?>) {
+            for (Object item : (List<?>) rawGroups) {
+                if (item instanceof Map<?, ?>) {
+                    Map<?, ?> map = (Map<?, ?>) item;
+                    String groupName = String.valueOf(map.get("name"));
+                    if (!groupName.isEmpty() && !"null".equals(groupName)) {
+                        groups.put(groupName, map);
+                    }
+                }
+            }
+        }
+        if ("GLOBAL".equals(name)) {
+            List<String> all = new ArrayList<>();
+            Object rawProxies = root.get("proxies");
+            if (rawProxies instanceof List<?>) {
+                for (Object item : (List<?>) rawProxies) {
+                    if (item instanceof Map<?, ?>) {
+                        String proxyName = String.valueOf(((Map<?, ?>) item).get("name"));
+                        if (!proxyName.isEmpty() && !"null".equals(proxyName)) {
+                            all.add(proxyName);
+                        }
+                    }
+                }
+            }
+            all.addAll(groups.keySet());
+            return flattenMembers(all, groups, new HashSet<>());
+        }
+        Map<?, ?> group = groups.get(name);
+        if (group == null) {
+            return Collections.singletonList(name);
+        }
+        Object members = group.get("proxies");
+        if (!(members instanceof List<?>)) {
+            return Collections.emptyList();
+        }
+        List<String> names = new ArrayList<>();
+        for (Object member : (List<?>) members) {
+            names.add(String.valueOf(member));
+        }
+        return flattenMembers(names, groups, new HashSet<>());
+    }
+
+    private static List<String> flattenMembers(List<String> names,
+                                               Map<String, Map<?, ?>> groups,
+                                               Set<String> seen) {
+        List<String> out = new ArrayList<>();
+        for (String member : names) {
+            if (!seen.add(member)) {
+                continue;
+            }
+            Map<?, ?> nested = groups.get(member);
+            if (nested == null) {
+                out.add(member);
+                continue;
+            }
+            Object members = nested.get("proxies");
+            if (!(members instanceof List<?>)) {
+                continue;
+            }
+            List<String> childNames = new ArrayList<>();
+            for (Object child : (List<?>) members) {
+                childNames.add(String.valueOf(child));
+            }
+            out.addAll(flattenMembers(childNames, groups, seen));
+        }
+        return out;
     }
 
     private static String proxiesJson() {
