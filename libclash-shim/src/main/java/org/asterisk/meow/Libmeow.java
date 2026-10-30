@@ -32,4 +32,15 @@ public final class Libmeow {
     public static native void nativeSetOwnerCallback(Object tunInterface);
 
     public static native String nativeProxyDelay(String name, String url, int timeoutMillis, String expected);
+
+    public static native long nativeMemoryUsage();
+
+    public static native int nativeConnectionCount();
+
+    public static native String nativeConnectionsJson();
+
+    public static native boolean nativeCloseConnection(String id);
+
+    public static native void nativeCloseAllConnections();
+
 }

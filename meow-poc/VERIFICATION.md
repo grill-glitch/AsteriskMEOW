@@ -184,3 +184,20 @@ Three mismatches were found and fixed:
 Remaining known risks: `panic=abort` means a Rust panic in a JNI entry point
 kills the app; NDK/CMake paths in the build script are pinned to the local
 SDK; `strip=true` makes AGP warn that libmeow.so cannot be stripped again.
+
+### Home monitoring: memory, connections, traffic rate
+
+`queryMemory()` now returns the process RSS (`/proc/self/status VmRSS`),
+`queryConnectionCount()` / `queryConnections()` read meow's
+`Statistics::active_connections`, and `queryTrafficNow()` derives per-second
+rates from the cumulative counters; `queryTrafficTotal()` remains cumulative.
+
+Verified on alioth with a 20 KiB/s limited download: home showed
+`3 个活动连接`, `CPU 7.3% · 335.4 MiB`, and `↓ 35.9 KiB/s` instead of the
+old `↓ 1.1 MiB/s` cumulative reading.
+
+### JNI panic boundary
+
+The release profile now uses `panic = "unwind"`; engine start/stop, the delay
+probe and the statistics entry points catch panics at the JNI boundary, and
+mutex poisoning is recovered instead of `unwrap()`-panicking.

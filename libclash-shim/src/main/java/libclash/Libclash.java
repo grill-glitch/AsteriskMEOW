@@ -123,6 +123,11 @@ public final class Libclash {
     public static void reset() {
         Libmeow.nativeStop();
         configPath = null;
+        lastTrafficNanos = 0L;
+        lastTrafficUp = 0L;
+        lastTrafficDown = 0L;
+        lastTrafficRateUp = 0L;
+        lastTrafficRateDown = 0L;
     }
 
     private static void startTunInternal(int fd, TunInterface tun) throws Exception {
@@ -139,8 +144,39 @@ public final class Libclash {
         }
     }
 
-    public static Traffic queryTrafficNow() {
-        return new Traffic(Libmeow.nativeUploadTotal(), Libmeow.nativeDownloadTotal());
+    private static long lastTrafficUp;
+    private static long lastTrafficDown;
+    private static long lastTrafficNanos;
+    private static long lastTrafficRateUp;
+    private static long lastTrafficRateDown;
+
+    /**
+     * mihomo's /traffic reports per-second rates, while meow only exposes
+     * cumulative counters. Derive the rate from the delta between calls; the
+     * caller polls roughly once per second.
+     */
+    public static synchronized Traffic queryTrafficNow() {
+        long up = Libmeow.nativeUploadTotal();
+        long down = Libmeow.nativeDownloadTotal();
+        long now = System.nanoTime();
+        if (lastTrafficNanos == 0L || up < lastTrafficUp || down < lastTrafficDown) {
+            lastTrafficUp = up;
+            lastTrafficDown = down;
+            lastTrafficNanos = now;
+            lastTrafficRateUp = 0L;
+            lastTrafficRateDown = 0L;
+            return new Traffic(0L, 0L);
+        }
+        double elapsed = (now - lastTrafficNanos) / 1_000_000_000.0;
+        if (elapsed < 0.2) {
+            return new Traffic(lastTrafficRateUp, lastTrafficRateDown);
+        }
+        lastTrafficRateUp = Math.max(0L, (long) ((up - lastTrafficUp) / elapsed));
+        lastTrafficRateDown = Math.max(0L, (long) ((down - lastTrafficDown) / elapsed));
+        lastTrafficUp = up;
+        lastTrafficDown = down;
+        lastTrafficNanos = now;
+        return new Traffic(lastTrafficRateUp, lastTrafficRateDown);
     }
 
     public static Traffic queryTrafficTotal() {
@@ -148,7 +184,7 @@ public final class Libclash {
     }
 
     public static long queryMemory() {
-        return 0L;
+        return Libmeow.nativeMemoryUsage();
     }
 
     public static String queryTunnelState() {
@@ -156,18 +192,22 @@ public final class Libclash {
     }
 
     public static int queryConnectionCount() {
-        return 0;
+        return Libmeow.nativeConnectionCount();
     }
 
     public static String queryConnections() {
-        return "{\"connections\":[],\"uploadTotal\":0,\"downloadTotal\":0}";
+        String result = Libmeow.nativeConnectionsJson();
+        return result == null
+                ? "{\"connections\":[],\"uploadTotal\":0,\"downloadTotal\":0}"
+                : result;
     }
 
     public static boolean closeConnection(String id) {
-        return false;
+        return Libmeow.nativeCloseConnection(id);
     }
 
     public static void closeAllConnections() {
+        Libmeow.nativeCloseAllConnections();
     }
 
     public static String queryProxies() {
