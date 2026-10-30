@@ -63,9 +63,10 @@ following is a hard rule for all work in this repository:
 and waits for the interface named `modeOptions.tunnelName` (`asterisk0`).
 META's shipped `libmihomo.so` is only a launcher that `dlopen`s
 `libgojni.so` and calls `AndroidMihomoCLI_v1`; that mechanism is forbidden
-here. A meow ROOT core must be a real PIE executable (packaged as a `.so`
-under `nativeLibraryDir`, e.g. `libmeowcore.so`) that implements the same
-contract:
+here. Ship exactly one engine: `libmeow.so`, which exports both the JNI surface
+and `meow_cli_main`. `libmeowcore.so` is only a few-KB PIE launcher that
+`dlopen`s `libmeow.so` and calls `meow_cli_main`; do not build a second copy
+of the engine. The CLI implementation must satisfy the same contract:
 
 1. Parse `-d`/`-f`; read the META-generated YAML.
 2. Translate META's TUN `listeners:` entry into meow's top-level `tun:`
@@ -81,7 +82,7 @@ contract:
 5. Keep the interface alive until SIGTERM; `asteriskd` owns start/stop and
    readiness. Do not use `VpnService` or `asteriskd` internals for this path.
 
-`libmeowcore.so` now implements that contract up to TUN creation and policy
+`libmeow.so` now implements that contract up to TUN creation and policy
 routing; the Android data path is still under verification. Do not substitute
 Mihomo to make the dialog disappear. VPN Service remains the supported meow
 path.

@@ -228,3 +228,12 @@ rules, and hands the fd to meow's TUN listener. Device: TUN reaches
 Android app traffic still returns no data through this path (DNS/TCP fail;
 the root/shell test is not equivalent to a VpnService-protected app), so
 ROOT TUN is not yet declared working. VPN Service remains fully verified.
+
+
+### Single engine, launcher only
+
+`libmeow.so` now exports both the JNI surface and `meow_cli_main`; the ROOT
+entry point is a 5.6 KB PIE `libmeowcore.so` that dlopens the same
+`libmeow.so` and calls `meow_cli_main(argc, argv)`. The duplicate 9.7 MB
+engine binary was removed. TUN reaches ready on `asterisk0` through this
+launcher; the Android data path remains under verification.
