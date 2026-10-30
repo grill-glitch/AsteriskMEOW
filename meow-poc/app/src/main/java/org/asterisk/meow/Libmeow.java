@@ -39,4 +39,7 @@ public final class Libmeow {
     public static native void nativeSetProtector(Object vpnService);
 
     public static native void nativeClearProtector();
+
+    /** Per-flow ConnectivityManager.getConnectionOwnerUid lookup (API 29+). */
+    public static native void nativeSetOwnerResolver(Object vpnService);
 }

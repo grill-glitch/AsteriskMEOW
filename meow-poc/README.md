@@ -17,11 +17,14 @@ META's submodules or Compose toolchain.
   (patched in libmeow; see its README).
 - All outbound sockets go through `VpnService.protect`.
 - DNS is answered in-process by meow's fake-IP resolver on the TUN.
-- DIRECT traffic flows end to end.
+- Per-flow UID attribution via `ConnectivityManager.getConnectionOwnerUid`;
+  `UID`/`PROCESS-NAME` rules match.
+- Proxy egress works (SOCKS5 node verified; no DIRECT fallback when the
+  proxy is down).
 
 It does **not** yet expose the Libclash-compatible API, mihomo's
-`/proxies`/`/configs` control surface, per-app UID attribution, or the ROOT
-modes. Those are the next milestones.
+`/proxies`/`/configs` control surface, or the ROOT modes. Those are the next
+milestones.
 
 ## Build
 
@@ -44,12 +47,22 @@ Install and run:
 
 ```bash
 ~/Android/Sdk/platform-tools/adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb shell appops set org.asterisk.meow.poc ACTIVATE_VPN allow
 adb shell am start -n org.asterisk.meow.poc/.MainActivity
 ```
 
-## Profile
+## Profile and tests
 
-`app/src/main/assets/config.yaml` is copied to the app's files dir on each
-start. It is DIRECT-only for the first milestone; add `proxies:` and rules
-as meow-rs supports them. `unified-delay`/handshake semantics are not yet
-ported — they are kernel measurement changes, not config keys.
+`app/src/main/assets/config.yaml` is copied to `files/config.yaml` only when
+that file does not exist yet, so a pushed profile survives restarts:
+
+```bash
+adb push tools/uid-test.yaml /data/local/tmp/uid.yaml
+adb shell run-as org.asterisk.meow.poc cp /data/local/tmp/uid.yaml files/config.yaml
+```
+
+`tools/uid-test.yaml` rejects UID 2000 (shell); `tools/proxy-test.yaml`
+routes everything to a SOCKS5 node on `127.0.0.1:1080` exposed with
+`adb reverse tcp:1080 tcp:1080` and `tools/socks5_server.py`.
+
+See `VERIFICATION.md` for the on-device evidence.

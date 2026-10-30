@@ -1,0 +1,17 @@
+# UID attribution test: reject the shell UID (2000), everything else DIRECT.
+# Push over the default profile:
+#   adb push tools/uid-test.yaml /data/local/tmp/uid.yaml
+#   adb shell run-as org.asterisk.meow.poc cp /data/local/tmp/uid.yaml files/config.yaml
+mode: rule
+log-level: info
+dns:
+  enable: true
+  listen: ""
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver: [223.5.5.5]
+  nameserver: ["tcp://223.5.5.5", "tcp://119.29.29.29"]
+proxies: []
+rules:
+  - UID,2000,REJECT
+  - MATCH,DIRECT

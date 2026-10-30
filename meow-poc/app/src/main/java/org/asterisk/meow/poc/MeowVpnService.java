@@ -49,7 +49,9 @@ public class MeowVpnService extends VpnService {
 
     private void startVpn() throws Exception {
         File config = new File(getFilesDir(), "config.yaml");
-        copyAsset("config.yaml", config);
+        if (!config.exists()) {
+            copyAsset("config.yaml", config);
+        }
 
         Builder builder = new Builder()
                 .setSession("AsteriskMEOW")
@@ -75,6 +77,7 @@ public class MeowVpnService extends VpnService {
 
         Libmeow.nativeInit();
         Libmeow.nativeSetProtector(this);
+        Libmeow.nativeSetOwnerResolver(this);
         int fd = tun.detachFd();
         tun = null;
 
