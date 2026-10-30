@@ -216,24 +216,11 @@ rejects Android's non-fd device creation (`tun listener on Android needs a
 pre-opened fd`). VPN Service mode remains libmeow.
 
 
-### ROOT TUN: meow core
+### ROOT TUN: meow via TUN2SOCKS
 
-Removed all mihomo binaries (`libmihomo.so`, `libgojni.so`). `libmeowcore.so`
-is a PIE built from `libmeow/core`; `asteriskd` starts it with `-d/-f`, it
-reshapes META's `listeners: type tun` into meow's `tun:` block, opens
-`/dev/net/tun` (`asterisk0`), installs `uidrange 0-0` + table 2022 policy
-rules, and hands the fd to meow's TUN listener. Device: TUN reaches
-`meow-core: TUN ready on asterisk0`; `asterisk0` is UP with 172.19.0.1/30.
-
-Android app traffic still returns no data through this path (DNS/TCP fail;
-the root/shell test is not equivalent to a VpnService-protected app), so
-ROOT TUN is not yet declared working. VPN Service remains fully verified.
-
-
-### Single engine, launcher only
-
-`libmeow.so` now exports both the JNI surface and `meow_cli_main`; the ROOT
-entry point is a 5.6 KB PIE `libmeowcore.so` that dlopens the same
-`libmeow.so` and calls `meow_cli_main(argc, argv)`. The duplicate 9.7 MB
-engine binary was removed. TUN reaches ready on `asterisk0` through this
-launcher; the Android data path remains under verification.
+ROOT/TUN is delivered through META's TUN2SOCKS helper: `hev-socks5-tunnel`
+owns `asterisk0`, and the single `libmeow.so` core (started by the 5.6 KB
+`libmeowcore.so` launcher) serves SOCKS5 on 127.0.0.1:65534. Verified on
+alioth: helper and core run, `asterisk0` is UP, and Tor Browser loading
+`https://api.ipify.org` shows the proxy IP `57.181.70.92`; meow logs show
+`MATCH(吹雪云) using 吹雪云`. No mihomo binary is present.

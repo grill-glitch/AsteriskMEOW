@@ -11,8 +11,10 @@ import engine.proxy.toLocalProxyOptionsOrNull
 import engine.root.config.RootConfigBuildContext
 import engine.root.config.RootModeStartConfig
 import engine.root.config.buildAsteriskdConfig
+import engine.root.daemon.config.AsteriskdHevSocks5TunnelHelper
 import engine.root.daemon.config.AsteriskdMode
 import engine.root.daemon.config.AsteriskdModeOptions
+import engine.root.config.tun2SocksInternalProxyPortValue
 import engine.vpn.TunOptions
 import engine.vpn.toTunOptions
 import utils.toTrimmedNonEmptyDistinctList
@@ -53,12 +55,30 @@ internal fun RootConfigBuildContext.buildTunStartConfig(): RootModeStartConfig {
         root = rootStartConfig,
         localProxyOptions = rawConfig?.toLocalProxyOptionsOrNull() ?: appState.toLocalProxyOptions().takeIf { rawConfig == null },
         asteriskdConfig = rootStartConfig.buildAsteriskdConfig(
-            mode = AsteriskdMode.Tun,
+            // meow-rs only accepts a pre-opened TUN fd on Android, so ROOT
+            // TUN is delivered through META's proven TUN2SOCKS helper:
+            // hev-socks5-tunnel owns asterisk0 and forwards to meow's SOCKS
+            // listener.
+            mode = AsteriskdMode.Tun2Socks,
             iptablesConfig = iptablesConfig,
             virtualInterfaces = listOf(tunConfig.device),
             modeOptions = AsteriskdModeOptions(
                 transparentPort = null,
+                tunnelName = null,
+            ),
+            helper = AsteriskdHevSocks5TunnelHelper(
+                executablePath = rootStartConfig.runtimePaths.hevSocks5TunnelExecutablePath,
+                socksHost = "127.0.0.1",
+                socksPort = appState.tun2SocksInternalProxyPortValue(),
                 tunnelName = tunConfig.device,
+                mtu = tunConfig.mtu,
+                ipv4Address = tunConfig.ipv4Address.substringBefore('/'),
+                ipv6Address = appState.toTunOptions().ipv6Address.address.takeIf {
+                    rootStartConfig.enableIpv6 ||
+                        (rootStartConfig.enableLocalDns && !rootStartConfig.enableRootIpv6Disabler)
+                },
+                multiQueue = true,
+                tcpFastOpen = true,
             ),
         ),
     )

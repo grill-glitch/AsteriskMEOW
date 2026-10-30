@@ -22,7 +22,7 @@ internal object RootModeCatalog {
         ),
         RootModeDefinition(
             runMode = RunModeTun,
-            daemonMode = AsteriskdMode.Tun,
+            daemonMode = AsteriskdMode.Tun2Socks,
             rootRequiredErrorResId = R.string.error_tun_root_required,
             startFailedErrorResId = R.string.error_tun_start_failed,
             buildConfig = RootConfigBuildContext::buildTunStartConfig,
@@ -56,9 +56,6 @@ private fun validatedDefinitions(vararg values: RootModeDefinition): List<RootMo
     val definitions = values.toList()
     require(definitions.map(RootModeDefinition::runMode).distinct().size == definitions.size) {
         "Duplicate ROOT run mode"
-    }
-    require(definitions.map(RootModeDefinition::daemonMode).distinct().size == definitions.size) {
-        "Duplicate asteriskd mode"
     }
     return definitions
 }

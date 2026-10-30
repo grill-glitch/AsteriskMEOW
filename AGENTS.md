@@ -60,32 +60,28 @@ following is a hard rule for all work in this repository:
 <core> -d <workingDirectory> -f <coreConfigPath>
 ```
 
-and waits for the interface named `modeOptions.tunnelName` (`asterisk0`).
 META's shipped `libmihomo.so` is only a launcher that `dlopen`s
 `libgojni.so` and calls `AndroidMihomoCLI_v1`; that mechanism is forbidden
-here. Ship exactly one engine: `libmeow.so`, which exports both the JNI surface
-and `meow_cli_main`. `libmeowcore.so` is only a few-KB PIE launcher that
-`dlopen`s `libmeow.so` and calls `meow_cli_main`; do not build a second copy
-of the engine. The CLI implementation must satisfy the same contract:
+here.
 
-1. Parse `-d`/`-f`; read the META-generated YAML.
-2. Translate META's TUN `listeners:` entry into meow's top-level `tun:`
-   section (meow's config rejects `listeners: type: tun`) and normalize
-   `dns.default-nameserver: system` and other Mihomo-only keys.
-3. Create `/dev/net/tun` itself (`TUNSETIFF`, `IFF_TUN|IFF_NO_PI`, name
-   `asterisk0`), configure the address/MTU, and pass the fd through
-   `TunListenerConfig.fd = Some(fd)`; meow's fd path skips Android route
-   management by design.
-4. Install policy routing explicitly: a `uidrange 0-0` rule to the main
-   table so the core's own proxy sockets do not loop, then a lower-priority
-   rule to a dedicated table whose default route is `asterisk0`.
-5. Keep the interface alive until SIGTERM; `asteriskd` owns start/stop and
-   readiness. Do not use `VpnService` or `asteriskd` internals for this path.
+meow-rs refuses to create an Android TUN device outside VpnService
+(`tun listener on Android needs a pre-opened fd`). Therefore ROOT/TUN uses
+META's proven TUN2SOCKS path, not raw meow TUN:
 
-`libmeow.so` now implements that contract up to TUN creation and policy
-routing; the Android data path is still under verification. Do not substitute
-Mihomo to make the dialog disappear. VPN Service remains the supported meow
-path.
+1. `asteriskd` runs its `hev-socks5-tunnel` helper in TUN2SOCKS mode; the
+   helper owns `asterisk0`, addresses, MTU and policy routing.
+2. The core is started in the same `tun2socks` mode and must expose a SOCKS5
+   listener on the `socks-port` in the profile (currently 65534).
+3. Ship exactly one engine: `libmeow.so`, which exports both the JNI surface
+   and `meow_cli_main`. `libmeowcore.so` is only a few-KB PIE launcher that
+   `dlopen`s `libmeow.so` and calls `meow_cli_main`; do not build a second
+   copy of the engine.
+4. The meow CLI reshapes META's `listeners: type: tun` away, normalizes
+   `dns.*: system`, and starts the SOCKS5 listener when `socks-port` is
+   present. Do not add a meow-created TUN path on Android.
+
+Do not substitute Mihomo to make the dialog disappear. VPN Service remains
+the VpnService/meow path; ROOT/TUN is the helper/meow-SOCKS path.
 
 ## Repository Structure and Product Boundaries
 

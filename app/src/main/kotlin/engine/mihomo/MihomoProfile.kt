@@ -208,6 +208,7 @@ private fun MutableMap<String, Any?>.putAsteriskRuntimeOverrides(
         }
         if (runMode == RunModeTun) {
             put(MihomoTunRuntimeMarkerKey, true)
+            put("socks-port", socksPort)
             put("listeners", listOf(appState.toMihomoTunListenerYamlMap(tunApplicationUids, this["rule-providers"])))
         }
         put("external-controller", control.address)
