@@ -201,3 +201,16 @@ old `↓ 1.1 MiB/s` cumulative reading.
 The release profile now uses `panic = "unwind"`; engine start/stop, the delay
 probe and the statistics entry points catch panics at the JNI boundary, and
 mutex poisoning is recovered instead of `unwrap()`-panicking.
+
+### ROOT TUN startup
+
+TUN（ROOT）mode failed with `child_exited exitCode=127` because META's
+`asteriskd` executes `nativeLibraryDir/libmihomo.so`; replacing the
+`libclash` AAR with the shim removed that launcher and its `libgojni.so`
+payload. Restored both from `AndroidLibClashLite v1.19.33-android.3`:
+`libmihomo.so` (CLI launcher) + `libgojni.so` (mihomo core). TUN now reaches
+`phase=Running` and creates `asterisk0` with `172.19.0.1/30`.
+
+This path still runs the mihomo core, not libmeow: meow's TUN listener
+rejects Android's non-fd device creation (`tun listener on Android needs a
+pre-opened fd`). VPN Service mode remains libmeow.
