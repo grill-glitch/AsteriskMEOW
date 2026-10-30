@@ -128,3 +128,12 @@ Two integration fixes were required:
 
 Not yet wired: delay tests, provider pages, logs/connections, selection
 routing, age/HWID, ROOT modes.
+
+
+### Config sync / HWID
+
+Saving a URL subscription with HWID previously failed at the 下载配置 stage
+with "The bundled core does not support subscription HWID" because the shim
+returned `supportsSubscriptionHwid() = false`. The shim now returns true and
+forwards `FetchOptions.hwid` as the `x-hwid` request header (mihomo's
+header), so the profile save can complete.

@@ -244,7 +244,8 @@ public final class Libclash {
     }
 
     public static boolean supportsSubscriptionHwid() {
-        return false;
+        // META sends FetchOptions.hwid; the shim forwards it as x-hwid.
+        return true;
     }
 
     public static void notifyDnsChanged(String payload) {
@@ -263,7 +264,11 @@ public final class Libclash {
                 connection.setConnectTimeout(30_000);
                 connection.setReadTimeout(60_000);
                 connection.setInstanceFollowRedirects(true);
-                connection.setRequestProperty("User-Agent", fetchUserAgent(optionsJson));
+                connection.setRequestProperty("User-Agent", fetchOption(optionsJson, "userAgent", "clash.meta"));
+                String hwid = fetchOption(optionsJson, "hwid", "");
+                if (!hwid.isEmpty()) {
+                    connection.setRequestProperty("x-hwid", hwid);
+                }
                 fetches.put(taskId, connection);
                 File target = new File(path);
                 File parent = target.getParentFile();
@@ -304,16 +309,15 @@ public final class Libclash {
         }
     }
 
-    private static String fetchUserAgent(String optionsJson) {
+    private static String fetchOption(String optionsJson, String key, String fallback) {
         try {
-            JSONObject options = new JSONObject(optionsJson);
-            String ua = options.optString("userAgent", "");
-            if (!ua.isEmpty()) {
-                return ua;
+            String value = new JSONObject(optionsJson).optString(key, "");
+            if (!value.isEmpty()) {
+                return value;
             }
         } catch (Throwable ignored) {
         }
-        return "clash.meta";
+        return fallback;
     }
 
     /**

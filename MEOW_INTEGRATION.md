@@ -27,8 +27,9 @@ keeps the META Compose UI and replaces the mihomo `libclash` AAR with
 - Delay tests return an explicit error; `queryGroupDelay` is empty.
 - Proxy selection is stored in the shim but does **not** change meow's
   routing yet (meow would need a config reload).
-- Providers, connections, logs and auto-switch are stubs; age-encrypted and
-  HWID subscriptions are unsupported.
+- Providers, connections, logs and auto-switch are stubs; age-encrypted
+  subscriptions are unsupported. Subscription HWID is forwarded as the
+  `x-hwid` request header.
 - ROOT modes still use the mihomo CLI; only VPN mode runs on meow.
 
 ## Build notes
