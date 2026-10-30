@@ -214,3 +214,17 @@ payload. Restored both from `AndroidLibClashLite v1.19.33-android.3`:
 This path still runs the mihomo core, not libmeow: meow's TUN listener
 rejects Android's non-fd device creation (`tun listener on Android needs a
 pre-opened fd`). VPN Service mode remains libmeow.
+
+
+### ROOT TUN: meow core
+
+Removed all mihomo binaries (`libmihomo.so`, `libgojni.so`). `libmeowcore.so`
+is a PIE built from `libmeow/core`; `asteriskd` starts it with `-d/-f`, it
+reshapes META's `listeners: type tun` into meow's `tun:` block, opens
+`/dev/net/tun` (`asterisk0`), installs `uidrange 0-0` + table 2022 policy
+rules, and hands the fd to meow's TUN listener. Device: TUN reaches
+`meow-core: TUN ready on asterisk0`; `asterisk0` is UP with 172.19.0.1/30.
+
+Android app traffic still returns no data through this path (DNS/TCP fail;
+the root/shell test is not equivalent to a VpnService-protected app), so
+ROOT TUN is not yet declared working. VPN Service remains fully verified.

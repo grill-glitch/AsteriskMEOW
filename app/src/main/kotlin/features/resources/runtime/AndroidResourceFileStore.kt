@@ -249,7 +249,7 @@ private fun Context.packageUpdatedAtMillis(): Long {
 private const val AsteriskdLibraryName = "libasteriskd.so"
 private const val BpfMatcherLibraryName = "libbpf-matcher.so"
 private const val Bpf2SocksLibraryName = "libbpf2socks.so"
-private const val MihomoCoreLibraryName = "libmihomo.so"
+private const val MihomoCoreLibraryName = "libmeowcore.so"
 private const val HevSocks5TunnelLibraryName = "libhev-socks5-tunnel-cli.so"
 private const val MihomoHomeDirName = "clash"
 

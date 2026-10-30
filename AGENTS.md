@@ -38,10 +38,58 @@ VPN Service is an independent non-ROOT execution path. Even on a rooted device, 
 - Do not copy AsteriskBOX's supervised-restart workaround into AsteriskMETA. BOX intentionally avoids sing-box `experimental.clash_api` and therefore has a different ROOT mode-switch path.
 - Mihomo's Clash API does not grant blanket permission to enable unrelated experimental Mihomo features; each new experimental dependency still requires explicit developer authorization.
 
+## Kernel Policy: meow-rs Only
+
+This fork (`AsteriskMEOW`) replaces the Mihomo kernel with meow-rs. The
+following is a hard rule for all work in this repository:
+
+- Do not add, bundle, execute, download, or fall back to `libmihomo.so`,
+  `libgojni.so`, the `AndroidLibClashLite` AAR, or any other Mihomo core,
+  launcher, or binary. This applies to VPN and ROOT/TUN alike.
+- `libclash-shim` is a Java compatibility facade over `libmeow`; it is not a
+  Mihomo runtime. Do not reintroduce a real `libclash`/`libgojni`.
+- META and `libclash` may be read as reference for the `asteriskd` contract,
+  config shape, and UI integration, but no Mihomo code or binary may be
+  copied into the product.
+
+### ROOT/TUN architecture (reference, not Mihomo)
+
+`asteriskd` starts `coreExecutablePath` as a child with exactly:
+
+```
+<core> -d <workingDirectory> -f <coreConfigPath>
+```
+
+and waits for the interface named `modeOptions.tunnelName` (`asterisk0`).
+META's shipped `libmihomo.so` is only a launcher that `dlopen`s
+`libgojni.so` and calls `AndroidMihomoCLI_v1`; that mechanism is forbidden
+here. A meow ROOT core must be a real PIE executable (packaged as a `.so`
+under `nativeLibraryDir`, e.g. `libmeowcore.so`) that implements the same
+contract:
+
+1. Parse `-d`/`-f`; read the META-generated YAML.
+2. Translate META's TUN `listeners:` entry into meow's top-level `tun:`
+   section (meow's config rejects `listeners: type: tun`) and normalize
+   `dns.default-nameserver: system` and other Mihomo-only keys.
+3. Create `/dev/net/tun` itself (`TUNSETIFF`, `IFF_TUN|IFF_NO_PI`, name
+   `asterisk0`), configure the address/MTU, and pass the fd through
+   `TunListenerConfig.fd = Some(fd)`; meow's fd path skips Android route
+   management by design.
+4. Install policy routing explicitly: a `uidrange 0-0` rule to the main
+   table so the core's own proxy sockets do not loop, then a lower-priority
+   rule to a dedicated table whose default route is `asterisk0`.
+5. Keep the interface alive until SIGTERM; `asteriskd` owns start/stop and
+   readiness. Do not use `VpnService` or `asteriskd` internals for this path.
+
+`libmeowcore.so` now implements that contract up to TUN creation and policy
+routing; the Android data path is still under verification. Do not substitute
+Mihomo to make the dialog disappear. VPN Service remains the supported meow
+path.
+
 ## Repository Structure and Product Boundaries
 
 - Application ID: `org.asterisk.zcc.ameta`.
-- Core: Mihomo; ROOT owner/core: `asteriskmeta` / `mihomo`.
+- Core: meow-rs (`libmeow` / `libclash-shim`); ROOT TUN must use the fork's meow core, never Mihomo (see "Kernel Policy" below).
 - ROOT modes: TPROXY, TUN, TUN2SOCKS, and BPF2SOCKS.
 - `app/`: Android application, Compose UI, data layer, VPN/ROOT orchestration, and core adapters.
 - `app/src/main/kotlin/engine/mihomo/binding/`: application models and coroutine adapters for the independently built AndroidLibClashLite AAR. Its gomobile JNI and bundled ROOT launcher share one native Core.
