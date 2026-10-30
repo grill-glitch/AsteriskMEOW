@@ -236,6 +236,9 @@ public final class Libclash {
     }
 
     public static String decryptAge(String content, String secretKey) throws Exception {
+        if (secretKey == null || secretKey.trim().isEmpty()) {
+            return content;
+        }
         throw new Exception("age-encrypted subscriptions are not supported by libmeow");
     }
 
@@ -271,6 +274,12 @@ public final class Libclash {
                 }
                 fetches.put(taskId, connection);
                 File target = new File(path);
+                if (target.isDirectory()) {
+                    // META passes a per-save processing directory
+                    // (cache/mihomo-profile-processing-*); the prepared
+                    // profile goes to config.yaml inside it.
+                    target = new File(target, "config.yaml");
+                }
                 File parent = target.getParentFile();
                 if (parent != null) {
                     parent.mkdirs();

@@ -137,3 +137,18 @@ with "The bundled core does not support subscription HWID" because the shim
 returned `supportsSubscriptionHwid() = false`. The shim now returns true and
 forwards `FetchOptions.hwid` as the `x-hwid` request header (mihomo's
 header), so the profile save can complete.
+
+### Subscription save, end to end
+
+After the HWID gate fix, saving a URL subscription still failed with
+`FileNotFoundException: .../cache/mihomo-profile-processing-*: open failed:
+EISDIR`: META passes the processing **directory**, while the shim wrote to
+`path` itself. The shim now writes `config.yaml` inside it.
+
+It also called `Clash.decryptAge(content, "")` on every profile read; the
+shim threw unconditionally, which would have failed even non-age profiles.
+Empty keys now return the content unchanged.
+
+Verified with a local HTTP subscription (`http://127.0.0.1:8000/sub.yaml`,
+`adb reverse`): the profile saved as `127.0.0.1`, 同步时间 22:10, and
+`files/mihomo-profiles/profile-*.yaml` was written. No error dialog.
