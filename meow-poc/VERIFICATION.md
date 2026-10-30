@@ -224,3 +224,13 @@ owns `asterisk0`, and the single `libmeow.so` core (started by the 5.6 KB
 alioth: helper and core run, `asterisk0` is UP, and Tor Browser loading
 `https://api.ipify.org` shows the proxy IP `57.181.70.92`; meow logs show
 `MATCH(吹雪云) using 吹雪云`. No mihomo binary is present.
+
+
+### ROOT TUN monitoring
+
+The meow core now starts its Clash-compatible API on `127.0.0.1:9090`
+(meow-api) with the profile secret. Home shows memory, active connections,
+node selection and cumulative/rate traffic; the app's `/traffic` collector
+polls one frame per second so it survives the core binding its API after
+`proxyRunning` flips. Verified in TUN mode: `自动选择`, `27.7 MiB`,
+`1 个活动连接`, and `↓ 389.7 KiB/s` during a SOCKS download.

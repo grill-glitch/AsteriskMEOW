@@ -271,6 +271,10 @@ internal class MonitoringRepository(
                     )
                 }
             } else {
+                // Keep the runtime monitor (and its /traffic collector) alive
+                // in ROOT mode, where service startup can happen after the
+                // lifecycle coordinator's first foreground resume.
+                mihomoRuntime.start(appState)
                 val memoryBytes = mihomoRuntime.refreshMemoryNow(appState)
                 val memoryLimitBytes = mihomoRuntime.state.value.memory.osLimitBytes.takeIf { it > 0L }
                 mutableState.update { current ->

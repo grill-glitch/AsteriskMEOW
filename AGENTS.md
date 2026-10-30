@@ -80,8 +80,11 @@ META's proven TUN2SOCKS path, not raw meow TUN:
    `dns.*: system`, and starts the SOCKS5 listener when `socks-port` is
    present. Do not add a meow-created TUN path on Android.
 
-Do not substitute Mihomo to make the dialog disappear. VPN Service remains
-the VpnService/meow path; ROOT/TUN is the helper/meow-SOCKS path.
+The meow CLI must also start the Clash-compatible API on
+`external-controller` (127.0.0.1:9090) with the profile secret; ROOT
+monitoring, node selection and traffic use that API. Do not substitute
+Mihomo to make the dialog disappear. VPN Service remains the
+VpnService/meow path; ROOT/TUN is the helper/meow-SOCKS path.
 
 ## Repository Structure and Product Boundaries
 

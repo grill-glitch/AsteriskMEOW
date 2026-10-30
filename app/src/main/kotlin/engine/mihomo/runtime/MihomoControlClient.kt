@@ -520,29 +520,33 @@ internal class MihomoControlClient(
             return@flow
         }
         while (currentCoroutineContext().isActive) {
-            val connection = openConnection(config, "/traffic", readTimeoutMillis = TrafficReadTimeoutMillis)
-            try {
-                val status = connection.responseCode
-                val stream = if (status in 200..299) connection.inputStream else connection.errorStream
-                if (status !in 200..299) {
-                    val response = stream?.bufferedReader()?.use { reader -> reader.readText() }.orEmpty()
-                    error("Mihomo API GET /traffic failed with HTTP $status: $response")
-                }
-                BufferedReader(InputStreamReader(stream ?: error("Invalid Mihomo API response for /traffic"))).use { reader ->
-                    while (currentCoroutineContext().isActive) {
-                        val line = reader.readNextNonBlankLine() ?: break
-                        val sample = parseTrafficLine(line) ?: continue
-                        emit(sample)
+            val sample = runCatching {
+                val connection = openConnection(
+                    config,
+                    "/traffic",
+                    readTimeoutMillis = TrafficReadTimeoutMillis,
+                )
+                try {
+                    connection.setRequestProperty("Connection", "close")
+                    val status = connection.responseCode
+                    val stream = if (status in 200..299) connection.inputStream else connection.errorStream
+                    if (status !in 200..299) {
+                        val response = stream?.bufferedReader()?.use { it.readText() }.orEmpty()
+                        error("Mihomo API GET /traffic failed with HTTP $status: $response")
                     }
+                    val reader = BufferedReader(
+                        InputStreamReader(stream ?: error("Invalid Mihomo API response for /traffic")),
+                    )
+                    val line = reader.readNextNonBlankLine() ?: return@runCatching null
+                    parseTrafficLine(line)
+                } finally {
+                    connection.disconnect()
                 }
-            } catch (error: IOException) {
-                if (!error.isExpectedMihomoStreamEnd()) {
-                    throw error
-                }
-            } finally {
-                connection.disconnect()
+            }.getOrNull()
+            if (sample != null) {
+                emit(sample)
             }
-            delay(StreamReconnectDelayMillis.milliseconds)
+            delay(1_000L)
         }
     }
 
