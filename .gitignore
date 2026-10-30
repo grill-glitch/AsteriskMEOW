@@ -19,3 +19,5 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 app/libs/*.aar
+
+libclash-shim/build/

@@ -98,3 +98,33 @@ Note: the phone reaches the host over Wi-Fi, but the host's own VPN
 - Not yet: Libclash-compatible API (40 methods), a native SS/Trojan node
   instead of SOCKS5, per-app rule parity, ROOT modes,
   `unified-delay`/handshake measurement semantics.
+
+## Milestone 3 — META UI APK with meow kernel
+
+The real META UI (`:app`) now depends on `:libclash-shim` instead of the
+mihomo AAR; package `org.asterisk.zcc.ameow` coexists with the user's META.
+
+- APK: `app-arm64-v8a-debug.apk` (52,768,584 B), label AsteriskMEOW.
+- First launch seeded `AsteriskMEOW Demo` (`data/DemoProfileSeeder`).
+- Home: 服务已启用, 当前配置 = AsteriskMEOW Demo, 当前节点 = DIRECT,
+  upload/download counters live.
+- Proxy page: DIRECT / Direct / 未测试 (profile snapshot from YAML).
+- logcat: `TunInterface.markSocket hook installed`,
+  `TunInterface.querySocketUid hook installed`, `TUN listener 'tun' started`,
+  `engine started: .../config.meow.yaml`.
+- `adb shell curl http://example.com/` → 200 through the VPN; log
+  `172.19.0.1:... --> example.com:80 match MATCH(DIRECT) using DIRECT`.
+- Stop → `engine stopped`, tun routes removed, process alive; Start again →
+  TUN restarted (fd 143) and curl 200.
+
+Two integration fixes were required:
+
+1. fd ownership: META's `tunFileDescriptor.use { ... }` closed the fd after
+   `startTun` returned, aborting meow's netstack (SIGABRT). The runtime now
+   passes `it.detachFd()`.
+2. config normalization: `dns.default-nameserver: system` is invalid for
+   meow; the shim rewrites `config.meow.yaml` and seeds
+   `Country.mmdb` / `geosite.dat` from META's `geoip.metadb` / `GeoSite.dat`.
+
+Not yet wired: delay tests, provider pages, logs/connections, selection
+routing, age/HWID, ROOT modes.

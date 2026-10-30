@@ -129,7 +129,7 @@ dependencies {
     implementation(libs.haze)
     implementation(libs.haze.blur)
     //noinspection UseTomlInstead
-    implementation("com.github.Asterisk4Magisk:libclash:${ProjectConfig.ANDROID_LIB_CLASH_LITE_VERSION}@aar")
+    implementation(project(":libclash-shim"))
     implementation(dependencies.project(":asteriskd"))
     implementation(dependencies.project(":enhance"))
     implementation(dependencies.project(":bpfmatcher"))

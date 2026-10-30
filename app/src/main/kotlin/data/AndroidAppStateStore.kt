@@ -84,7 +84,7 @@ class AndroidAppStateStore private constructor(
                 )
             } else {
                 LoadedAppState(
-                    state = settingsState,
+                    state = DemoProfileSeeder.seedIfNeeded(appContext, settingsState),
                     loadedFromDatabase = false,
                 )
             }

@@ -69,7 +69,7 @@ internal object AndroidMihomoRuntime {
         runCatching {
             tunFileDescriptor.use {
                 Clash.startTun(
-                    fd = it.fd,
+                    fd = it.detachFd(),
                     stack = config.mihomoTunStack,
                     congestionController = config.mihomoTunCongestionController,
                     gateway = config.tunGatewayAddresses(),
