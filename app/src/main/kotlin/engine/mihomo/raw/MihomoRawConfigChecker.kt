@@ -43,7 +43,7 @@ internal fun MihomoRawConfigSnapshot.check(
         issue(
             RawConfigReadiness.Degraded,
             api.path,
-            api.problem ?: "Mihomo API is not configured; dependent features are unavailable",
+            api.problem ?: "meow API is not configured; dependent features are unavailable",
         )
     }
     val requiresSocksInbound = runMode == RunModeTun2Socks ||

@@ -3,7 +3,7 @@
          Keep section and resource order aligned across translations and sibling apps. -->
 
     <!-- Common -->
-    <string name="app_name">AsteriskMETA</string>
+    <string name="app_name">AsteriskMEOW</string>
     <string name="code_editor_format_content_changed">Content changed during formatting. Tap format again.</string>
     <string name="code_editor_format_failed">Could not format the code. Check its syntax and try again.</string>
     <string name="code_editor_format_javascript">Format JavaScript</string>
@@ -151,16 +151,16 @@
     <string name="monitor_resource_cpu">Process CPU</string>
     <string name="monitor_resource_cpu_peak">CPU peak</string>
     <string name="monitor_resource_details">Sampling details</string>
-    <string name="monitor_resource_embedded_explanation">CPU includes Mihomo and other AsteriskMETA work in the same process, so it is not directly comparable with ROOT mode.</string>
+    <string name="monitor_resource_embedded_explanation">CPU includes meow and other AsteriskMEOW work in the same process, so it is not directly comparable with ROOT mode.</string>
     <string name="monitor_resource_focus_memory">Memory %1$s</string>
     <string name="monitor_resource_interval">Sampling interval</string>
-    <string name="monitor_resource_memory">Mihomo memory</string>
+    <string name="monitor_resource_memory">meow memory</string>
     <string name="monitor_resource_memory_peak">Memory peak</string>
     <string name="monitor_resource_pid">Process PID</string>
-    <string name="monitor_resource_root_explanation">CPU is sampled from the independent Mihomo process.</string>
-    <string name="monitor_resource_source_embedded">AsteriskMETA process · Embedded</string>
+    <string name="monitor_resource_root_explanation">CPU is sampled from the independent meow process.</string>
+    <string name="monitor_resource_source_embedded">AsteriskMEOW process · Embedded</string>
     <string name="monitor_resource_source_info">CPU measurement</string>
-    <string name="monitor_resource_source_root">Mihomo process · ROOT</string>
+    <string name="monitor_resource_source_root">meow process · ROOT</string>
     <string name="monitor_resource_title">Resource monitor</string>
     <string name="monitor_resource_trend">Shared trend</string>
 
@@ -212,7 +212,7 @@
     <string name="monitor_network_local_ipv4">Local IPv4</string>
     <string name="monitor_network_local_ipv6">Local IPv6</string>
     <string name="monitor_network_privacy">Probe privacy</string>
-    <string name="monitor_network_privacy_body">Entering this page or refreshing sends one address request to %1$s. The request contains no subscription, profile, device identifier, account, or Mihomo credential. Results remain in memory and are not logged or saved.</string>
+    <string name="monitor_network_privacy_body">Entering this page or refreshing sends one address request to %1$s. The request contains no subscription, profile, device identifier, account, or meow credential. Results remain in memory and are not logged or saved.</string>
     <string name="monitor_network_probe_cloudflare">Cloudflare Exit</string>
     <string name="monitor_network_probe_general">General Exit</string>
     <string name="monitor_network_probe_source">Returned by the probe service</string>
@@ -230,7 +230,7 @@
     <string name="mihomo_proxies_group_test">Test group</string>
     <string name="mihomo_proxies_loading">Loading proxies…</string>
     <string name="mihomo_proxies_locate_selected">Locate current proxy</string>
-    <string name="mihomo_proxies_no_profile_summary">Add or import a Mihomo YAML profile before viewing and switching proxies.</string>
+    <string name="mihomo_proxies_no_profile_summary">Add or import a meow YAML profile before viewing and switching proxies.</string>
     <string name="mihomo_proxies_no_profile_title">No profile added</string>
     <string name="mihomo_proxies_option_interrupt_connections">Interrupt connections</string>
     <string name="mihomo_proxies_interrupt_connections_failed">Could not close some connections through this proxy group</string>
@@ -245,7 +245,7 @@
     <string name="mihomo_proxies_option_sort_delay">Delay</string>
     <string name="mihomo_proxies_option_sort_name">Name</string>
     <string name="mihomo_proxies_options">Proxy display options</string>
-    <string name="mihomo_proxies_runtime_unavailable">Mihomo runtime is not ready</string>
+    <string name="mihomo_proxies_runtime_unavailable">meow runtime is not ready</string>
     <string name="mihomo_proxies_search">Search proxies</string>
     <string name="mihomo_proxies_select_failed">Failed to switch proxy</string>
     <string name="mihomo_proxies_title">Proxies</string>
@@ -253,7 +253,7 @@
     <!-- Connection test -->
     <string name="connection_test_concurrent">Test concurrency</string>
     <string name="connection_test_scope_summary">Use this URL when the proxy group has no test URL specified</string>
-    <string name="connection_test_settings_summary">Tune how the Mihomo URL test measures delay</string>
+    <string name="connection_test_settings_summary">Tune how the meow URL test measures delay</string>
     <string name="connection_test_settings_title">Connection test</string>
     <string name="connection_test_timeout">Test timeout (ms)</string>
     <string name="connection_test_unified_delay">Unified delay</string>
@@ -276,10 +276,10 @@
     <string name="mihomo_profile_actions">Profile actions</string>
     <string name="mihomo_profile_add">Add profile</string>
     <string name="mihomo_profile_add_file">File</string>
-    <string name="mihomo_profile_add_file_summary">Import a local Mihomo YAML file</string>
+    <string name="mihomo_profile_add_file_summary">Import a local meow YAML file</string>
     <string name="mihomo_profile_add_method_title">Add profile</string>
     <string name="mihomo_profile_add_qr">QR code</string>
-    <string name="mihomo_profile_add_qr_summary">Scan a clash:// or clashmeta:// import QR code</string>
+    <string name="mihomo_profile_add_qr_summary">Scan a clash:// import QR code</string>
     <string name="mihomo_profile_add_url">URL</string>
     <string name="mihomo_profile_add_url_summary">Add a remote subscription URL and sync it now</string>
     <string name="mihomo_profile_age_secret_key">Age secret key</string>
@@ -345,7 +345,7 @@
         <item quantity="one">%1$d unlimited</item>
         <item quantity="other">%1$d unlimited</item>
     </plurals>
-    <string name="mihomo_profile_raw_api">Mihomo API</string>
+    <string name="mihomo_profile_raw_api">meow API</string>
     <string name="mihomo_profile_raw_chip">Raw profile</string>
     <string name="mihomo_profile_raw_configured">Configured</string>
     <string name="mihomo_profile_raw_dns_hijack">DNS hijack</string>
@@ -513,7 +513,7 @@
     <string name="settings_dns_nameserver_policy_format">Format: rule=&gt;server1,server2</string>
     <string name="settings_dns_nameserver_summary">DNS servers actually used</string>
     <string name="settings_dns_override">Override DNS</string>
-    <string name="settings_dns_override_summary">Replace the DNS block in the selected Mihomo profile</string>
+    <string name="settings_dns_override_summary">Replace the DNS block in the selected meow profile</string>
     <string name="settings_dns_policy_invalid">Invalid nameserver policy</string>
     <string name="settings_dns_prefer_h3">Prefer HTTP/3</string>
     <string name="settings_dns_proxy_server_nameserver">Proxy server nameserver</string>
@@ -523,14 +523,14 @@
     <string name="settings_dns_section_hosts">Hosts</string>
     <string name="settings_dns_section_nameserver">Nameservers</string>
     <string name="settings_dns_section_policy">Policy</string>
-    <string name="settings_dns_server_invalid">Invalid Mihomo DNS server</string>
+    <string name="settings_dns_server_invalid">Invalid meow DNS server</string>
     <string name="settings_dns_summary">Override DNS, nameservers, policies, fallback filter</string>
     <string name="settings_dns_use_hosts">Use hosts</string>
     <string name="settings_dns_use_system_hosts">Use system hosts</string>
     <string name="settings_fake_ip_pool_invalid">Enter an IPv4 CIDR with a prefix from /1 to /30</string>
 
     <!-- Run mode and proxy service -->
-    <string name="error_mihomo_data_dir_missing">Mihomo data directory is missing</string>
+    <string name="error_mihomo_data_dir_missing">meow data directory is missing</string>
     <string name="proxy_error_dialog_copied">Copied to clipboard</string>
     <string name="proxy_error_dialog_copy">Copy log</string>
     <string name="proxy_error_dialog_details">Error details</string>
@@ -783,7 +783,7 @@
     <string name="settings_traffic_stats_notification_summary">Show current speed and total traffic in notifications and the status bar</string>
 
     <!-- Quick settings tile -->
-    <string name="quick_settings_tile_label">AsteriskMETA</string>
+    <string name="quick_settings_tile_label">AsteriskMEOW</string>
     <string name="quick_settings_tile_processing">Processing…</string>
     <string name="quick_settings_tile_running">Proxy running</string>
     <string name="quick_settings_tile_stopped">Proxy stopped</string>
@@ -860,7 +860,7 @@
     <string name="settings_resource_files_source">Update source</string>
     <string name="settings_resource_files_source_custom">Custom</string>
     <string name="settings_resource_files_source_custom_title">Custom resource URLs</string>
-    <string name="settings_resource_files_source_metacubex_github">MetaCubeX (GitHub)</string>
+    <string name="settings_resource_files_source_metacubex_github">GitHub release</string>
     <string name="settings_resource_files_source_value">Source: %1$s</string>
     <string name="settings_resource_files_update">Update resource files</string>
     <string name="settings_resource_files_updated">Resource files updated</string>
@@ -1004,7 +1004,7 @@
     <string name="auto_switch_log_stopped">Automatic checks are not running</string>
     <string name="auto_switch_log_not_running">Automatic checks run only while the proxy service is running</string>
     <string name="auto_switch_log_unavailable">Could not read automatic switching status from the core</string>
-    <string name="auto_switch_log_unsupported_core">The running core does not support automatic switching. Remove the uploaded custom Mihomo core in Resource management to use the built-in core.</string>
+    <string name="auto_switch_log_unsupported_core">The running core does not support automatic switching. Remove the uploaded custom meow core in Resource management to use the built-in core.</string>
     <string name="auto_switch_log_groups">Monitored groups</string>
     <string name="auto_switch_log_events">Recent events</string>
     <string name="auto_switch_progress_preparing">Reading policy groups…</string>
@@ -1030,7 +1030,7 @@
     <string name="auto_switch_event_restored">Switched back from %1$s to previously selected proxy %2$s · %3$d ms</string>
     <string name="auto_switch_info">Details</string>
     <string name="auto_switch_policy_title">How automatic switching works</string>
-    <string name="auto_switch_policy">Checks run inside the core while the proxy service is running, so the app does not need to stay in the background.\n\nThey use the test URL, timeout and concurrency from Connection test.\n\nAfter the consecutive failure count is reached, preferred proxies are tested first, starting with those that were fastest in earlier tests. With a nonzero expected latency, the first healthy proxy below it is selected and the remaining proxies are not tested. With zero, or when no proxy meets it, the lowest-latency healthy proxy is selected. Other proxies are tested only when no preferred proxy is healthy.\n\nHealthy and manually changed selections are kept. When no proxy is healthy, the selection is kept and later scans back off.\n\nWith Switch back on, the proxy selected before the first automatic switch is checked every interval and selected again after 3 consecutive successes. Changing the selection manually cancels this.\n\nRequires the built-in core; an uploaded custom Mihomo core does not support it.</string>
+    <string name="auto_switch_policy">Checks run inside the core while the proxy service is running, so the app does not need to stay in the background.\n\nThey use the test URL, timeout and concurrency from Connection test.\n\nAfter the consecutive failure count is reached, preferred proxies are tested first, starting with those that were fastest in earlier tests. With a nonzero expected latency, the first healthy proxy below it is selected and the remaining proxies are not tested. With zero, or when no proxy meets it, the lowest-latency healthy proxy is selected. Other proxies are tested only when no preferred proxy is healthy.\n\nHealthy and manually changed selections are kept. When no proxy is healthy, the selection is kept and later scans back off.\n\nWith Switch back on, the proxy selected before the first automatic switch is checked every interval and selected again after 3 consecutive successes. Changing the selection manually cancels this.\n\nRequires the built-in core; an uploaded custom meow core does not support it.</string>
     <string name="auto_switch_policy_raw">This profile uses its raw configuration. The core follows the asterisk-auto-switch key in that configuration; these settings are saved but not applied.</string>
     <string name="auto_switch_groups">Monitored policy groups</string>
     <string name="auto_switch_groups_summary">Choose at least one manual selection group in the current profile.\n\nOnly directly selected proxies are monitored. DIRECT, REJECT, nested groups and core-managed automatic groups are left unchanged.\n\nAfter changing profiles, select groups again.</string>

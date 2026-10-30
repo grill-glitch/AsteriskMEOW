@@ -72,7 +72,7 @@ internal class AndroidResourceFileStore(
     }
 
     fun restoreBundled(kind: ResourceFileKind) {
-        require(kind != ResourceFileKind.MihomoCore) { "Mihomo core must be restored through the locked publisher" }
+        require(kind != ResourceFileKind.MihomoCore) { "meow core must be restored through the locked publisher" }
         restoreBundledResourceFile(kind)
     }
 
@@ -99,7 +99,7 @@ internal class AndroidResourceFileStore(
     }
 
     fun replace(kind: ResourceFileKind, uri: Uri) {
-        require(kind != ResourceFileKind.MihomoCore) { "Mihomo core must be replaced through the locked publisher" }
+        require(kind != ResourceFileKind.MihomoCore) { "meow core must be replaced through the locked publisher" }
         dataDir.mkdirs()
         val replaceTempFile = file(kind).resolveSibling("${kind.fileName}.replace.tmp")
         appContext.contentResolver.openInputStream(uri)?.use { input ->

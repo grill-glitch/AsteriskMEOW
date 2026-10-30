@@ -3,7 +3,7 @@
          Keep section and resource order aligned across translations and sibling apps. -->
 
     <!-- Common -->
-    <string name="app_name">AsteriskMETA</string>
+    <string name="app_name">AsteriskMEOW</string>
     <string name="code_editor_format_content_changed">格式化期间内容已修改，请重新点击格式化</string>
     <string name="code_editor_format_failed">格式化失败，请检查语法后重试</string>
     <string name="code_editor_format_javascript">格式化 JavaScript</string>
@@ -149,16 +149,16 @@
     <string name="monitor_resource_cpu">进程 CPU</string>
     <string name="monitor_resource_cpu_peak">CPU 峰值</string>
     <string name="monitor_resource_details">采样详情</string>
-    <string name="monitor_resource_embedded_explanation">CPU 包含同一进程内的 Mihomo 与 AsteriskMETA 开销，不能与 ROOT 模式直接横向比较。</string>
+    <string name="monitor_resource_embedded_explanation">CPU 包含同一进程内的 meow 与 AsteriskMEOW 开销，不能与 ROOT 模式直接横向比较。</string>
     <string name="monitor_resource_focus_memory">内存 %1$s</string>
     <string name="monitor_resource_interval">采样间隔</string>
-    <string name="monitor_resource_memory">Mihomo 内存</string>
+    <string name="monitor_resource_memory">meow 内存</string>
     <string name="monitor_resource_memory_peak">内存峰值</string>
     <string name="monitor_resource_pid">进程 PID</string>
-    <string name="monitor_resource_root_explanation">CPU 数据来自独立运行的 Mihomo 进程。</string>
-    <string name="monitor_resource_source_embedded">AsteriskMETA 进程 · 内嵌</string>
+    <string name="monitor_resource_root_explanation">CPU 数据来自独立运行的 meow 进程。</string>
+    <string name="monitor_resource_source_embedded">AsteriskMEOW 进程 · 内嵌</string>
     <string name="monitor_resource_source_info">CPU 统计说明</string>
-    <string name="monitor_resource_source_root">Mihomo 进程 · ROOT</string>
+    <string name="monitor_resource_source_root">meow 进程 · ROOT</string>
     <string name="monitor_resource_title">资源监控</string>
     <string name="monitor_resource_trend">共享趋势</string>
 
@@ -210,7 +210,7 @@
     <string name="monitor_network_local_ipv4">本地 IPv4</string>
     <string name="monitor_network_local_ipv6">本地 IPv6</string>
     <string name="monitor_network_privacy">探测隐私说明</string>
-    <string name="monitor_network_privacy_body">进入本页或刷新时，会分别向 %1$s 发送一次地址查询。请求不包含订阅、配置、设备标识、账号或 Mihomo 凭据；结果仅保留在内存中，不写入日志或设置。</string>
+    <string name="monitor_network_privacy_body">进入本页或刷新时，会分别向 %1$s 发送一次地址查询。请求不包含订阅、配置、设备标识、账号或 meow 凭据；结果仅保留在内存中，不写入日志或设置。</string>
     <string name="monitor_network_probe_cloudflare">Cloudflare 节点出口</string>
     <string name="monitor_network_probe_general">通用出口</string>
     <string name="monitor_network_probe_source">由探测服务返回</string>
@@ -228,7 +228,7 @@
     <string name="mihomo_proxies_group_test">整组测试</string>
     <string name="mihomo_proxies_loading">正在加载代理…</string>
     <string name="mihomo_proxies_locate_selected">定位当前选中节点</string>
-    <string name="mihomo_proxies_no_profile_summary">请先添加或导入 Mihomo YAML 配置，然后再查看和切换代理节点。</string>
+    <string name="mihomo_proxies_no_profile_summary">请先添加或导入 meow YAML 配置，然后再查看和切换代理节点。</string>
     <string name="mihomo_proxies_no_profile_title">还没有配置文件</string>
     <string name="mihomo_proxies_option_interrupt_connections">中断连接</string>
     <string name="mihomo_proxies_interrupt_connections_failed">无法断开经过此策略组的部分连接</string>
@@ -243,7 +243,7 @@
     <string name="mihomo_proxies_option_sort_delay">延迟</string>
     <string name="mihomo_proxies_option_sort_name">名称</string>
     <string name="mihomo_proxies_options">代理显示选项</string>
-    <string name="mihomo_proxies_runtime_unavailable">Mihomo 运行时尚未就绪</string>
+    <string name="mihomo_proxies_runtime_unavailable">meow 运行时尚未就绪</string>
     <string name="mihomo_proxies_search">搜索代理</string>
     <string name="mihomo_proxies_select_failed">切换代理失败</string>
     <string name="mihomo_proxies_title">代理</string>
@@ -251,7 +251,7 @@
     <!-- Connection test -->
     <string name="connection_test_concurrent">测试并发</string>
     <string name="connection_test_scope_summary">策略组未指定测试链接时使用此链接</string>
-    <string name="connection_test_settings_summary">调整 Mihomo URL 测试的测量行为</string>
+    <string name="connection_test_settings_summary">调整 meow URL 测试的测量行为</string>
     <string name="connection_test_settings_title">连接测试</string>
     <string name="connection_test_timeout">测试超时(ms)</string>
     <string name="connection_test_unified_delay">统一延迟</string>
@@ -274,10 +274,10 @@
     <string name="mihomo_profile_actions">配置操作</string>
     <string name="mihomo_profile_add">添加配置</string>
     <string name="mihomo_profile_add_file">文件</string>
-    <string name="mihomo_profile_add_file_summary">导入本地 Mihomo YAML 文件</string>
+    <string name="mihomo_profile_add_file_summary">导入本地 meow YAML 文件</string>
     <string name="mihomo_profile_add_method_title">添加配置</string>
     <string name="mihomo_profile_add_qr">二维码</string>
-    <string name="mihomo_profile_add_qr_summary">扫描 clash:// 或 clashmeta:// 导入二维码</string>
+    <string name="mihomo_profile_add_qr_summary">扫描 clash:// 导入二维码</string>
     <string name="mihomo_profile_add_url">URL</string>
     <string name="mihomo_profile_add_url_summary">添加远程订阅 URL 并立即同步</string>
     <string name="mihomo_profile_age_secret_key">Age 私钥</string>
@@ -339,7 +339,7 @@
     <plurals name="mihomo_profile_provider_usage_unlimited_count">
         <item quantity="other">%1$d 个不限量</item>
     </plurals>
-    <string name="mihomo_profile_raw_api">Mihomo API</string>
+    <string name="mihomo_profile_raw_api">meow API</string>
     <string name="mihomo_profile_raw_chip">原始配置</string>
     <string name="mihomo_profile_raw_configured">已配置</string>
     <string name="mihomo_profile_raw_dns_hijack">DNS 劫持</string>
@@ -502,7 +502,7 @@
     <string name="settings_dns_nameserver_policy_format">格式：rule=&gt;server1,server2</string>
     <string name="settings_dns_nameserver_summary">实际使用的 DNS 服务器</string>
     <string name="settings_dns_override">覆写 DNS</string>
-    <string name="settings_dns_override_summary">替换当前 Mihomo 配置中的 DNS 配置块</string>
+    <string name="settings_dns_override_summary">替换当前 meow 配置中的 DNS 配置块</string>
     <string name="settings_dns_policy_invalid">无效 Nameserver Policy</string>
     <string name="settings_dns_prefer_h3">优先 HTTP/3</string>
     <string name="settings_dns_proxy_server_nameserver">节点域名服务器</string>
@@ -512,14 +512,14 @@
     <string name="settings_dns_section_hosts">Hosts</string>
     <string name="settings_dns_section_nameserver">域名服务器</string>
     <string name="settings_dns_section_policy">策略</string>
-    <string name="settings_dns_server_invalid">无效 Mihomo DNS 服务器</string>
+    <string name="settings_dns_server_invalid">无效 meow DNS 服务器</string>
     <string name="settings_dns_summary">覆写 DNS、域名服务器、策略、Fallback Filter</string>
     <string name="settings_dns_use_hosts">使用 hosts</string>
     <string name="settings_dns_use_system_hosts">使用系统 hosts</string>
     <string name="settings_fake_ip_pool_invalid">请输入前缀长度为 /1 至 /30 的 IPv4 CIDR</string>
 
     <!-- Run mode and proxy service -->
-    <string name="error_mihomo_data_dir_missing">Mihomo 数据目录缺失</string>
+    <string name="error_mihomo_data_dir_missing">meow 数据目录缺失</string>
     <string name="proxy_error_dialog_copied">已复制到剪贴板</string>
     <string name="proxy_error_dialog_copy">复制日志</string>
     <string name="proxy_error_dialog_details">错误详情</string>
@@ -772,7 +772,7 @@
     <string name="settings_traffic_stats_notification_summary">在通知和状态栏中显示当前速度和累计流量</string>
 
     <!-- Quick settings tile -->
-    <string name="quick_settings_tile_label">AsteriskMETA</string>
+    <string name="quick_settings_tile_label">AsteriskMEOW</string>
     <string name="quick_settings_tile_processing">正在处理…</string>
     <string name="quick_settings_tile_running">代理运行中</string>
     <string name="quick_settings_tile_stopped">代理已停止</string>
@@ -848,7 +848,7 @@
     <string name="settings_resource_files_source">更新来源</string>
     <string name="settings_resource_files_source_custom">自定义</string>
     <string name="settings_resource_files_source_custom_title">自定义资源地址</string>
-    <string name="settings_resource_files_source_metacubex_github">MetaCubeX（GitHub）</string>
+    <string name="settings_resource_files_source_metacubex_github">GitHub 发布页</string>
     <string name="settings_resource_files_source_value">来源：%1$s</string>
     <string name="settings_resource_files_update">更新资源文件</string>
     <string name="settings_resource_files_updated">资源文件已更新</string>
@@ -990,7 +990,7 @@
     <string name="auto_switch_log_stopped">自动检测未运行</string>
     <string name="auto_switch_log_not_running">自动检测仅在代理服务运行时进行</string>
     <string name="auto_switch_log_unavailable">无法从核心读取自动切换状态</string>
-    <string name="auto_switch_log_unsupported_core">当前运行的核心不支持自动切换。请在资源管理中移除上传的自定义 Mihomo 核心以使用内置核心。</string>
+    <string name="auto_switch_log_unsupported_core">当前运行的核心不支持自动切换。请在资源管理中移除上传的自定义 meow 核心以使用内置核心。</string>
     <string name="auto_switch_log_groups">监测的策略组</string>
     <string name="auto_switch_log_events">最近事件</string>
     <string name="auto_switch_progress_preparing">正在读取策略组…</string>
@@ -1015,7 +1015,7 @@
     <string name="auto_switch_event_restored">已从 %1$s 切回此前选择的节点 %2$s · %3$d ms</string>
     <string name="auto_switch_info">说明</string>
     <string name="auto_switch_policy_title">自动切换的工作方式</string>
-    <string name="auto_switch_policy">代理服务运行期间由核心执行检测，App 无需常驻后台。\n\n检测使用「连接测试」中的测试地址、超时与并发数。\n\n达到连续失败次数后，优先检测偏好节点，并按以往测速结果从快到慢检测。期望延迟不为 0 时，找到第一个低于该延迟的可用节点即切换，不再检测其余节点；为 0 或没有节点达标时，选择延迟最低的可用节点。偏好节点全部不可用时才检测其他节点。\n\n当前节点正常或已被手动更改时不切换；全部不可用时保留原选择，并逐步拉长后续扫描间隔。\n\n开启「恢复切回」后，每个检测间隔都会检测首次自动切换前选择的节点，连续成功 3 次后切回该节点；期间手动更改选择则取消切回。\n\n需要使用内置核心，上传的自定义 Mihomo 核心不支持此功能。</string>
+    <string name="auto_switch_policy">代理服务运行期间由核心执行检测，App 无需常驻后台。\n\n检测使用「连接测试」中的测试地址、超时与并发数。\n\n达到连续失败次数后，优先检测偏好节点，并按以往测速结果从快到慢检测。期望延迟不为 0 时，找到第一个低于该延迟的可用节点即切换，不再检测其余节点；为 0 或没有节点达标时，选择延迟最低的可用节点。偏好节点全部不可用时才检测其他节点。\n\n当前节点正常或已被手动更改时不切换；全部不可用时保留原选择，并逐步拉长后续扫描间隔。\n\n开启「恢复切回」后，每个检测间隔都会检测首次自动切换前选择的节点，连续成功 3 次后切回该节点；期间手动更改选择则取消切回。\n\n需要使用内置核心，上传的自定义 meow 核心不支持此功能。</string>
     <string name="auto_switch_policy_raw">当前配置使用原始配置文件，核心遵循其中的 asterisk-auto-switch 字段；这里的设置会保存但不会生效。</string>
     <string name="auto_switch_groups">监测的策略组</string>
     <string name="auto_switch_groups_summary">至少选择当前配置中的一个手动选择组。\n\n仅监测直接选中的节点；直连、拒绝、嵌套策略组及核心管理的自动策略组保持原行为。\n\n切换配置后需重新选择策略组。</string>

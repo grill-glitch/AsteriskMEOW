@@ -9,7 +9,7 @@ import engine.root.runtime.model.RootRuntimeOwner
 
 internal fun RootRuntimeOwner.productName(): String = when (this) {
     RootRuntimeOwner.AsteriskNg -> "AsteriskNG"
-    RootRuntimeOwner.AsteriskMeta -> "AsteriskMETA"
+    RootRuntimeOwner.AsteriskMeta -> "AsteriskMEOW"
     RootRuntimeOwner.AsteriskBox -> "AsteriskBOX"
 }
 

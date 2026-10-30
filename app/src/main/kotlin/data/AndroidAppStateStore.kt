@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import app.AppState
+import app.DefaultMihomoProfileId
 import app.withCompatibleProxyAppListMode
 import features.logs.AndroidAppLogger
 import kotlinx.coroutines.CoroutineScope
@@ -79,12 +80,12 @@ class AndroidAppStateStore private constructor(
             val settingsState = settingsPreferences.load()
             if (persistedState?.hasRoomContent() == true) {
                 LoadedAppState(
-                    state = persistedState.toAppState(settingsState),
+                    state = persistedState.toAppState(settingsState).withoutDemoProfile(appContext),
                     loadedFromDatabase = true,
                 )
             } else {
                 LoadedAppState(
-                    state = DemoProfileSeeder.seedIfNeeded(appContext, settingsState),
+                    state = settingsState.withoutDemoProfile(appContext),
                     loadedFromDatabase = false,
                 )
             }
@@ -214,3 +215,27 @@ private data class LoadedAppState(
     val state: AppState,
     val loadedFromDatabase: Boolean,
 )
+
+/** Remove the old first-run sample profile from existing installs. */
+private fun AppState.withoutDemoProfile(context: Context): AppState {
+    val demo = mihomoProfiles.filter { profile -> profile.name == "AsteriskMEOW Demo" }
+    if (demo.isEmpty()) return this
+    runCatching { java.io.File(context.filesDir, "mihomo-profiles/demo.yaml").delete() }
+    val demoIds = demo.map { it.id }.toSet()
+    val remaining = mihomoProfiles.filterNot { it.id in demoIds }
+    val selected = if (selectedMihomoProfileId in demoIds) {
+        remaining.firstOrNull()?.id ?: DefaultMihomoProfileId
+    } else {
+        selectedMihomoProfileId
+    }
+    val pending = if (pendingMihomoRestartProfileId in demoIds) {
+        remaining.firstOrNull()?.id ?: DefaultMihomoProfileId
+    } else {
+        pendingMihomoRestartProfileId
+    }
+    return copy(
+        mihomoProfiles = remaining,
+        selectedMihomoProfileId = selected,
+        pendingMihomoRestartProfileId = pending,
+    )
+}

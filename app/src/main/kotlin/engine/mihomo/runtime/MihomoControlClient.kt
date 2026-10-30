@@ -130,7 +130,7 @@ internal class MihomoControlClient(
         return requestJsonObject(config, "/connections")["connections"]
             .jsonArrayOrNull()
             ?.size
-            ?: error("Invalid Mihomo API response for /connections")
+            ?: error("Invalid meow API response for /connections")
     }
 
     fun closeConnection(
@@ -532,10 +532,10 @@ internal class MihomoControlClient(
                     val stream = if (status in 200..299) connection.inputStream else connection.errorStream
                     if (status !in 200..299) {
                         val response = stream?.bufferedReader()?.use { it.readText() }.orEmpty()
-                        error("Mihomo API GET /traffic failed with HTTP $status: $response")
+                        error("meow API GET /traffic failed with HTTP $status: $response")
                     }
                     val reader = BufferedReader(
-                        InputStreamReader(stream ?: error("Invalid Mihomo API response for /traffic")),
+                        InputStreamReader(stream ?: error("Invalid meow API response for /traffic")),
                     )
                     val line = reader.readNextNonBlankLine() ?: return@runCatching null
                     parseTrafficLine(line)
@@ -567,7 +567,7 @@ internal class MihomoControlClient(
         path: String,
     ): JsonObject {
         return RuntimeJson.parseToJsonElement(request(config, path)).jsonObjectOrNull()
-            ?: error("Invalid Mihomo API response for $path")
+            ?: error("Invalid meow API response for $path")
     }
 
     private suspend fun requestMemoryJsonObject(
@@ -584,16 +584,16 @@ internal class MihomoControlClient(
             val stream = if (status in 200..299) connection.inputStream else connection.errorStream
             if (status !in 200..299) {
                 val response = stream?.bufferedReader()?.use { reader -> reader.readText() }.orEmpty()
-                error("Mihomo API GET /memory failed with HTTP $status: $response")
+                error("meow API GET /memory failed with HTTP $status: $response")
             }
 
-            val reader = stream?.bufferedReader() ?: error("Invalid Mihomo API response for /memory")
+            val reader = stream?.bufferedReader() ?: error("Invalid meow API response for /memory")
             reader.use {
                 repeat(MemorySampleReadLimit) {
                     val line = reader.readNextNonBlankLine()
                         ?: return latest ?: EmptyMemoryJson
                     val root = RuntimeJson.parseToJsonElement(line).jsonObjectOrNull()
-                        ?: error("Invalid Mihomo API response for /memory")
+                        ?: error("Invalid meow API response for /memory")
                     latest = root
                     val inUse = root.longValue("inuse") ?: root.longValue("inUse") ?: 0L
                     if (inUse > 0L) {
@@ -888,7 +888,7 @@ private class MihomoApiException(
     path: String,
     val status: Int,
     response: String,
-) : IllegalStateException("Mihomo API $method $path failed with HTTP $status: $response")
+) : IllegalStateException("meow API $method $path failed with HTTP $status: $response")
 
 private fun Throwable.mihomoDelayFailureStatus(): MihomoDelayStatus {
     return if (

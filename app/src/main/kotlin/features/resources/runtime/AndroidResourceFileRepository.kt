@@ -190,13 +190,13 @@ internal class AndroidResourceFileRepository(
             rootModeActive = { currentRunMode().isRootRunMode() },
             candidateFactory = { },
             installInitial = {},
-            replaceAppOwned = { check(target.delete()) { "Failed to remove the custom Mihomo core" } },
+            replaceAppOwned = { check(target.delete()) { "Failed to remove the custom meow core" } },
             replaceWithRoot = {
                 val result = rootShell.exec(
                     RootCoreRemovalCommand.build(target.absolutePath),
                     ShellExecOptions(logFailure = false),
                 )
-                check(result.errno == 0) { result.stderr.ifBlank { "Failed to remove the custom Mihomo core" } }
+                check(result.errno == 0) { result.stderr.ifBlank { "Failed to remove the custom meow core" } }
             },
             deferRootOwned = { error(appContext.getString(R.string.settings_root_required)) },
         )
@@ -229,7 +229,7 @@ internal class AndroidResourceFileRepository(
     private fun installInitialCoreCandidate(candidate: File) {
         try {
             val installed = store.installInitialMihomoCoreCandidate(candidate)
-            require(installed || store.file(ResourceFileKind.MihomoCore).isFile) { "Failed to install the initial Mihomo core" }
+            require(installed || store.file(ResourceFileKind.MihomoCore).isFile) { "Failed to install the initial meow core" }
         } finally {
             candidate.delete()
         }
@@ -251,7 +251,7 @@ internal class AndroidResourceFileRepository(
                 ShellExecOptions(logFailure = false),
             )
             if (removal.errno != 0) {
-                error(removal.stderr.ifBlank { "Failed to remove the existing Mihomo core" })
+                error(removal.stderr.ifBlank { "Failed to remove the existing meow core" })
             }
             store.replaceMihomoCoreCandidate(candidate)
         } finally {

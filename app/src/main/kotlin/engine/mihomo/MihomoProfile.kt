@@ -171,7 +171,7 @@ private fun String.appendRuntimeOverrides(
     val managed = linkedMapOf<String, Any?>()
     managed.putAsteriskRuntimeOverrides(appState, runMode, exposePorts = exposePorts, tunApplicationUids = tunApplicationUids)
     val overrideYaml = dumpYaml(normalizeYamlValue(managed))
-    return trimEnd() + "\n\n# AsteriskMETA runtime overrides\n" + overrideYaml
+    return trimEnd() + "\n\n# AsteriskMEOW runtime overrides\n" + overrideYaml
 }
 
 private fun MutableMap<String, Any?>.putAsteriskRuntimeOverrides(
@@ -613,8 +613,8 @@ private val AsteriskManagedTopLevelKeys = setOf(
 
 private const val NameserverPolicySeparator = "=>"
 private const val SystemDnsServer = "system://"
-internal const val MihomoProfileMissingErrorMessage = "No Mihomo configuration selected"
-internal const val MihomoProfileEmptyErrorMessage = "Selected Mihomo configuration has no YAML content"
+internal const val MihomoProfileMissingErrorMessage = "No meow configuration selected"
+internal const val MihomoProfileEmptyErrorMessage = "Selected meow configuration has no YAML content"
 
 private val LocalProxySkipAuthPrefixes = listOf("127.0.0.1/8", "::1/128")
 private val YamlDumpSettings = DumpSettings.builder()

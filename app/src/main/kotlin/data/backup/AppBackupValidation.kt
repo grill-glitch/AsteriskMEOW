@@ -6,11 +6,11 @@ package data.backup
 import app.MihomoProfileType
 
 internal fun AppBackupData.validateForRestore() {
-    requireValidIds("Mihomo profile", mihomoProfiles, AppBackupMihomoProfile::id)
+    requireValidIds("meow profile", mihomoProfiles, AppBackupMihomoProfile::id)
     requireValidIds("override script", mihomoOverrideScripts, AppBackupMihomoOverrideScript::id)
     mihomoProfiles.forEach { profile ->
         require(MihomoProfileType.entries.any { type -> type.storageValue == profile.type }) {
-            "Unknown Mihomo profile type: ${profile.type}"
+            "Unknown meow profile type: ${profile.type}"
         }
     }
 }

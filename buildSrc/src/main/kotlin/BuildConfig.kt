@@ -10,7 +10,7 @@ import org.gradle.api.tasks.TaskAction
 
 object ProjectConfig {
     const val JVM_VERSION = 21
-    const val PROJECT_NAME = "AsteriskMETA"
+    const val PROJECT_NAME = "AsteriskMEOW"
     const val VERSION_NAME = "1.2.24-dev"
     const val PACKAGE_NAME = "org.asterisk.zcc.ameow"
     const val ASTERISKD_VERSION = "v2.2.7"

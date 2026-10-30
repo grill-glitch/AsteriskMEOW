@@ -46,7 +46,7 @@ internal fun parseMihomoConnectionsJson(
     updatedAtMillis: Long = System.currentTimeMillis(),
 ): MihomoConnectionsState {
     val root = ConnectionJson.parseToJsonElement(content) as? JsonObject
-        ?: error("Invalid Mihomo connections response")
+        ?: error("Invalid meow connections response")
     return MihomoConnectionsState(
         uploadTotalBytes = root.longValue("uploadTotal") ?: 0L,
         downloadTotalBytes = root.longValue("downloadTotal") ?: 0L,

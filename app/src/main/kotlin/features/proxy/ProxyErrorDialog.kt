@@ -195,5 +195,5 @@ private fun MonospaceBlock(text: String) {
 
 private fun copyToClipboard(context: Context, text: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-    clipboard?.setPrimaryClip(ClipData.newPlainText("AsteriskMETA proxy error", text))
+    clipboard?.setPrimaryClip(ClipData.newPlainText("AsteriskMEOW proxy error", text))
 }

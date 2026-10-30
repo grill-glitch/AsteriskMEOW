@@ -23,5 +23,5 @@ internal fun Context.prepareMihomoCoreLogPaths(): MihomoCoreLogPaths {
 
 internal fun MihomoCoreLogPaths.logDirectoryPath(): String {
     return File(errorLogPath).parentFile?.absolutePath
-        ?: error("Mihomo log directory is unavailable")
+        ?: error("meow log directory is unavailable")
 }

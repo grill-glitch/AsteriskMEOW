@@ -117,7 +117,7 @@ internal class PublicNetworkProbeClient(
                             instanceFollowRedirects = true
                             useCaches = false
                             setRequestProperty("Accept", "application/json, text/plain")
-                            setRequestProperty("User-Agent", "AsteriskMETA")
+                            setRequestProperty("User-Agent", "AsteriskMEOW")
                             probeProxy?.proxyAuthorization?.let { auth ->
                                 setRequestProperty("Proxy-Authorization", auth)
                             }
