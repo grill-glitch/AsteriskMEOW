@@ -166,3 +166,21 @@ with their default features restored VLESS/Vision/Vmess/etc.
 user's subscription: 334/344/352/516/613 ms on several nodes (two timeouts
 for genuinely slow nodes), and VPN egress changed from the host IP
 `18.138.127.43` to proxy `57.181.70.92`.
+
+### Build configuration audit
+
+Three mismatches were found and fixed:
+
+- `MIN_SDK=29` was used for bindgen/CMake, but `cargo ndk` was not given a
+  platform, so the ELF was tagged API 21. `cargo ndk -P 26` plus
+  `MIN_SDK=26` now matches the app's minSdk 26 and the ELF note reads 26.
+- `RUST_ANDROID_GRADLE_CC_LINK_ARG` is a rust-android-gradle variable and was
+  ignored by cargo-ndk; 16 KB alignment happened to come from NDK r30. It is
+  replaced by an explicit rustc link argument; LOAD alignment is 0x4000.
+- The app advertised four ABIs, but libmeow could only be built for arm64:
+  armv7 and x86_64 fail in `boring-sys` bindgen (`_bindgen_ty_1`). The fork
+  now declares arm64-v8a only instead of shipping broken splits.
+
+Remaining known risks: `panic=abort` means a Rust panic in a JNI entry point
+kills the app; NDK/CMake paths in the build script are pinned to the local
+SDK; `strip=true` makes AGP warn that libmeow.so cannot be stripped again.

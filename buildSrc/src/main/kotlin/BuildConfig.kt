@@ -22,7 +22,7 @@ object ProjectConfig {
     const val TARGET_SDK = 37
     const val TARGET_SDK_MINOR = 2
     const val MIN_SDK = 26
-    val SUPPORTED_ANDROID_ABIS = listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+    val SUPPORTED_ANDROID_ABIS = listOf("arm64-v8a")
 }
 
 fun org.gradle.api.Project.getGitVersionCode(): Int {
